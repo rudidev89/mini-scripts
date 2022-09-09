@@ -1,0 +1,18 @@
+2022-09-08 16:09:20 => _varval app rootpath log_run | app="rudidev89"
+2022-09-08 16:09:20 => _varval app rootpath log_run | rootpath="/storage/emulated/0/rudidev89"
+2022-09-08 16:09:20 => _varval app rootpath log_run | log_run="true"
+2022-09-08 16:09:21 => _setenv | etcpath="/storage/emulated/0/rudidev89/etc"
+2022-09-08 16:09:21 => _setenv | configpath="/storage/emulated/0/rudidev89/etc/config"
+2022-09-08 16:09:21 => _setenv | initpath="/storage/emulated/0/rudidev89/etc/init"
+2022-09-08 16:09:21 => _setenv | binpath="/storage/emulated/0/rudidev89/bin"
+2022-09-08 16:09:21 => _setenv | libpath="/storage/emulated/0/rudidev89/lib"
+2022-09-08 16:09:21 => _setenv | tmppath="/storage/emulated/0/rudidev89/tmp"
+2022-09-08 16:09:21 => _setenv | syspath="/storage/emulated/0/rudidev89/sys"
+2022-09-08 16:09:21 => _setenv | slibpath="/storage/emulated/0/rudidev89/sys/slib"
+2022-09-08 16:09:21 => _setenv | sbinpath="/storage/emulated/0/rudidev89/sys/sbin"
+2022-09-08 16:09:21 => _create_file /storage/emulated/0/rudidev89/sys/function.sh /storage/emulated/0/rudidev89/sys/.env | #!/data/data/com.termux/files/usr/bin/bash # Copyright (c) 2022-2022 # Romeo Delta <rudidev89@gmail.com>
+2022-09-08 16:09:21 => _create_file /storage/emulated/0/rudidev89/sys/function.sh /storage/emulated/0/rudidev89/sys/.env | source /storage/emulated/0/rudidev89/sys/.env
+2022-09-08 16:09:21 => _create_file /storage/emulated/0/rudidev89/sys/function.sh /storage/emulated/0/rudidev89/sys/.env | # create your script here.
+2022-09-08 16:09:21 => _create_file /storage/emulated/0/rudidev89/sys/rudidev89 /storage/emulated/0/rudidev89/sys/function.sh | #!/data/data/com.termux/files/usr/bin/bash # Copyright (c) 2022-2022 # Romeo Delta <rudidev89@gmail.com>
+2022-09-08 16:09:21 => _create_file /storage/emulated/0/rudidev89/sys/rudidev89 /storage/emulated/0/rudidev89/sys/function.sh | source /storage/emulated/0/rudidev89/sys/function.sh
+2022-09-08 16:09:21 => _create_file /storage/emulated/0/rudidev89/sys/rudidev89 /storage/emulated/0/rudidev89/sys/function.sh | # create your script here.

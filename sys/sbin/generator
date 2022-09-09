@@ -1,0 +1,102 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# Copyright (c) 2022-2022
+# Romeo Delta <rudidev89@gmail.com>
+
+source /storage/emulated/0/rudidev89/sys/function.sh
+sourcelib decorations file
+# create your script here.
+POSITIONAL_ARGS=()
+
+function gen_help(){
+	decor_header "generator"
+	printf "Usage :\n	create [OPTION]...\n"
+	
+	local helpb="
+	\n-c|--config\n,Membuat file config di folder etc/config.
+	\n-i|--init\n,Membuat file init di folder etc/init.
+	\n-b|--binary\n,Membuat file binary di folder bin.
+	\n-l|--library\n,Membuat file library di folder library.
+	\n-s|--source\n,Menambah source file kedalam file yang dibuat."
+	echo -e $helpb|column -t -s ',' -W 2
+	decor_line
+}
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -c|--config)
+      config="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -b|--binary)
+      bin="$2"
+      shift
+      shift
+      ;;
+    -l|--library)
+      lib="$2"
+      shift
+      shift
+      ;;
+    -i|--init)
+      init="$2"
+      shift
+      shift
+      ;;
+    -s|--source)
+      source="$2"
+      shift
+      shift
+      ;;
+    -h|--help)
+      gen_help
+      exit 1
+      ;;
+#    --all)
+#      all="$2"
+#      shift
+#      shift
+#      ;;
+#    --default)
+#      DEFAULT=YES
+#      shift
+#      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1") # save positional arg
+      shift
+      
+      ;;
+  esac
+done
+
+set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+
+# src_file=${source##*/}
+# src_path=${source:0:${#source}-${#src_file}}
+results="config bin lib init all";
+for result in ${results[@]}
+do
+	if [ ! -z ${!result} ];then
+		[[ ${result} == "config" || ${result} == "init" ]] && path=etc/${result} || path=${result}
+		[ ${result} == "lib" ] && file=${!result}.sh || file=${!result}
+		if [ ${path} == "etc/config" ]; then
+			create_file ${path}/${file}
+		else
+			create_file ${path}/${file} ${source}
+		fi
+	fi
+done
+
+
+
+
+
+
+
+
+

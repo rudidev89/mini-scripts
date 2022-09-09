@@ -1,0 +1,52 @@
+to() {
+  DEFAULT_EXTENSION="txt"
+
+  if [[ $1 == "-h" || $1 == "--help" ]]; then
+    echo "Usage: to [-c] [-e extension] [filename]"
+    return
+  fi
+
+  if [[ $1 == "-c" ]]; then
+    dir="$(pwd)"
+    shift
+  else
+    dir="${HOME}/Desktop"
+  fi
+
+  if [[ $1 == "-e" ]]; then
+    if [[ -z $2 ]]; then
+      echo "to: missing argument to '-e'"
+      echo "Usage: to [-c] [-e extension] [filename]"
+      return
+    fi
+    ext="$2"
+    shift 2
+  else
+    ext="${DEFAULT_EXTENSION}"
+  fi
+
+  if [[ -z $1 ]]; then
+    name="untitled"
+  elif [[ $1 == *"."* ]]; then
+    name="${1%.*}"
+    ext="${1##*.}"
+  else
+    name="$1"
+  fi
+
+  if [[ -e "${dir}/${name}.${ext}" || -L "${dir}/${name}.${ext}" ]]; then
+    i=1
+    while [[ -e "${dir}/${name}-${i}.${ext}" || -L "${dir}/${name}-${i}.${ext}" ]]; do
+      (( i++ ))
+    done
+    name="${name}-${i}"
+  fi
+
+  touch "${dir}/${name}.${ext}"
+
+  if [[ "${OSTYPE}" == "linux-gnu"* ]]; then
+    xdg-open "${dir}/${name}.${ext}"
+  elif [[ "${OSTYPE}" == "darwin"* ]]; then
+    open "${dir}/${name}.${ext}"
+  fi
+}
