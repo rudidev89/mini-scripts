@@ -1,0 +1,70 @@
+#!/data/data/com.termux/files/usr/bin/bash
+[ -f $PATH/$0 ] || cp -f $0 $PATH; chmod +x $PATH/$0
+app="rudidev89";
+rootpath="/storage/emulated/0/${app}";
+log_run=true
+
+core="${rootpath}/sys/${app}"
+env_file="${rootpath}/sys/.env";
+_template="#!${PATH}/bash\n\n# Copyright (c) 2022-$(date '+%Y')\n# Romeo Delta <rudidev89@gmail.com>"
+
+function _logger(){
+	if [ $log_run ]; then
+		local logfile="${rootpath}/tmp/${app}_log"
+		local input=$(cat -);
+		local logtime=$(date '+%Y-%m-%d %H:%m:%S');
+		#if [ ! -z $input ]; then
+			echo -e ${input}|while read -r line; do
+				printf "${logtime} => $* | ${line}\n" >> ${logfile}; # "$TMPDIR/${app}.log";
+			done
+		#fi
+	fi
+}
+
+function _install(){
+	mkdir -p ${rootpath}/{etc/{config,init},bin,lib,tmp,sys/{slib,sbin}};
+	
+	local sfunc="${rootpath}/sys/function.sh";
+	_setenv
+	_create_file ${sfunc} ${env_file};
+	_create_file ${core} ${sfunc};
+}
+
+function _varval(){
+	for vv in ${@}; do
+		[ -z ${!vv} ] || echo "${vv}=\"${!vv}\""|tee -a ${env_file}|_logger ${FUNCNAME} $*;
+	done
+}
+
+function _setenv(){
+	[ -f ${env_file} ] && rm -f ${env_file}
+	_varval app rootpath log_run;
+	find ${rootpath} | while read dir; do
+	if [ -d ${dir} ]; then
+	[ ${dir} == ${rootpath} ] || echo "${dir##*/}path=\"${dir}\""|tee -a ${env_file}|_logger ${FUNCNAME} $*;
+	fi
+	done
+}
+
+function _create_file(){
+	if [ ! -f ${1} ]; then
+		touch ${1};
+		echo -e "${_template}"|tee -a ${1}|_logger ${FUNCNAME} $*;
+		for src in ${@}; do [ ${src} == ${1} ] || echo -e "\nsource ${src}"|tee -a ${1}|_logger ${FUNCNAME} $*; done;
+		echo -e "\n# create your script here.\n"|tee -a ${1}|_logger ${FUNCNAME} $*;
+	fi
+}
+
+case $1 in
+	install)
+		read -p "Ketik password : " ps
+		if [[ ! -z ${ps} && ${ps} == ${app} ]]; then
+			printf "Install scripts.\n";
+			printf "to : ${rootpath}\n";
+			_install;
+		fi
+		;;
+	*)
+	bash ${core} $*
+	exit 1
+esac
